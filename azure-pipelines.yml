@@ -1,0 +1,32 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: Polaris_Evan
+
+steps:
+- script: |
+    docker build -t juice-shop:latest .
+  displayName: Build Image
+
+- script: |
+    docker images
+  displayName: List Images
+
+- script: |
+    docker save juice-shop:latest | gzip > polaris-demo.tar.gz
+
+- task: BlackDuckSecurityScan@2
+  inputs:
+    scanType: 'polaris'
+    polarisServerUrl: 'https://poc.polaris.blackduck.com'
+    polarisAccessToken: 'temp'
+    polarisAssessmentTypes: 'SCA'
+    polarisTestScaType: 'SCA-CONTAINER'
+    polarisArtifactToUpload: 'polaris-demo.tar.gz'
+    polarisContainerName: 'juice-shop'
+    polarisApplicationName: 'Merganser Duck Hardware'
+    polarisProjectName: 'Containerz'
