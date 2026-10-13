@@ -23,7 +23,7 @@ steps:
   inputs:
     scanType: 'polaris'
     polarisServerUrl: 'https://poc.polaris.blackduck.com'
-    polarisAccessToken: 'temp'
+    polarisAccessToken: '$(POLARIS_TOKEN)'
     polarisAssessmentTypes: 'SCA'
     polarisTestScaType: 'SCA-CONTAINER'
     polarisArtifactToUpload: 'polaris-demo.tar.gz'
